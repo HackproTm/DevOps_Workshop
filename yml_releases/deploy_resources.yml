@@ -1,0 +1,79 @@
+parameters:
+  - name: SA_Name
+    displayName: Storage Account Name
+    type: string
+  - name: SA_Location
+    displayName: Azure Zone for Storage Account
+    type: string
+    default: "Central US"
+  - name: SA_SKU
+    displayName: SKU for Storage Account
+    type: string
+    default: "Standard_LRS"
+  - name: SA_Kind
+    displayName: Storage Account type
+    type: string
+    default: "StorageV2"
+  - name: SA_AccessTier
+    displayName: Access Tier for Storage Account
+    type: string
+    default: "Cool"
+  - name: SA_MinimumTls
+    displayName: Minimun TLS to Connect into Storage Account
+    type: string
+    default: "TLS1_0"
+  - name: SA_SupportsHttpsTrafficOnly
+    displayName: Storage Account support HTTPS only
+    type: boolean
+    default: true
+  - name: SA_PublicNetworkAccess
+    displayName: Storage Account is public
+    type: boolean
+    default: true
+  - name: SA_AllowBlobPublicAccess
+    displayName: Blob Storage is public
+    type: boolean
+    default: true
+  - name: SA_AllowSharedKeyAccess
+    displayName: Shared Key is public
+    type: boolean
+    default: true
+
+variables:
+  - name: AzureSubscription
+    value: "HACKPRO_AZURE_DEPLOY"
+  - name: ResourceGroup
+    value: "WORKSHOP-DATA"
+  - name: ADO_AgentPool
+    value: "WORKSHOP"
+
+stages:
+  - stage: DEPLOY_SA
+    dependsOn: []
+    jobs:
+      - job: Deploy_SA
+        pool: $(ADO_AgentPool)
+        steps:
+          - task: AzureResourceGroupDeployment@2
+            displayName: Deploy Storage Account
+            inputs:
+              azureSubscription: $(AzureSubscription)
+              action: Create Or Update Resource Group
+              resourceGroupName: $(ResourceGroup)
+              location: ${{ parameters.SA_Location }}
+              templateLocation: 'Linked artifact'
+              csmFile: ./arm_templates/storage_account.json
+              overrideParameters: |
+                -sa_name "${{ parameters.SA_Name }}"
+                -sa_location "${{ parameters.SA_Location }}"
+                -sa_sku "${{ parameters.SA_SKU }}"
+                -sa_kind "${{ parameters.SA_Kind }}"
+                -sa_accesstier "${{ parameters.SA_AccessTier }}"
+                -sa_minimumtls "${{ parameters.SA_MinimumTls }}"
+                -sa_supportshttpstrafficonly "${{ parameters.SA_SupportsHttpsTrafficOnly }}"
+                -sa_publicnetworkaccess "${{ parameters.SA_PublicNetworkAccess }}"
+                -sa_allowblobpublicaccess "${{ parameters.SA_AllowBlobPublicAccess }}"
+                -sa_allowsharedkeyaccess "${{ parameters.SA_AllowSharedKeyAccess }}"
+              deploymentMode: 'Incremental'
+              deploymentName: 'WORKSHOP-DATA-SA'
+              copyAzureVMTags: true

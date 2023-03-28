@@ -1,0 +1,110 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "sa_name": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 34,
+      "defaultValue": "[concat('sa', resourceGroup().name)]",
+      "metadata": {
+        "description": "Storage Account name."
+      }
+    },
+    "sa_location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Location for Storage Account."
+      }
+    },
+    "sa_sku": {
+      "type": "string",
+      "defaultValue": "Standard_LRS",
+      "allowedValues": [
+        "Standard_LRS",
+        "Standard_GRS",
+        "Standard_RAGRS",
+        "Standard_ZRS",
+        "Standard_GZRS",
+        "Standard_RAGZRS"
+      ],
+      "metadata": {
+        "description": "Storage Account type"
+      }
+    },
+    "sa_kind": {
+      "type": "string",
+      "defaultValue": "StorageV2",
+      "allowedValues": [
+        "Storage",
+        "StorageV2",
+        "BlobStorage",
+        "FileStorage",
+        "BlockBlobStorage"
+      ]
+    },
+    "sa_accesstier": {
+      "type": "string",
+      "defaultValue": "Cool",
+      "allowedValues": [
+        "Cool",
+        "Hot"
+      ]
+    },
+    "sa_minimumtls": {
+      "type": "string",
+      "defaultValue": "TLS1_0",
+      "allowedValues": [
+        "TLS1_0",
+        "TLS1_1",
+        "TLS1_2"
+      ]
+    },
+    "sa_supportshttpstrafficonly": {
+      "type": "bool",
+      "defaultValue": false
+    },
+    "sa_publicnetworkaccess": {
+      "type": "bool",
+      "defaultValue": false
+    },
+    "sa_allowblobpublicaccess": {
+      "type": "bool",
+      "defaultValue": false
+    },
+    "sa_allowsharedkeyaccess": {
+      "type": "bool",
+      "defaultValue": false
+    }
+  },
+  "variables": {
+    "uniqueSAName": "[concat(parameters('sa_name'), '-', uniqueString(resourceGroup().id))]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2019-04-01",
+      "name": "[variables('uniqueSAName')]",
+      "location": "[parameters('sa_location')]",
+      "tags": {
+        "displayName": "DevOps_Workshop"
+      }
+      ,
+      "sku": {
+        "name":  "[parameters('sa_sku')]"
+      },
+      "kind": "[parameters('sa_kind')]",
+      "properties": {
+        "accessTier":  "[parameters('sa_accesstier')]",
+        "minimumTlsVersion": "[parameters('sa_minimumtls')]",
+        "supportsHttpsTrafficOnly": "[parameters('sa_supportshttpstrafficonly')]",
+        "publicNetworkAccess": "[parameters('sa_publicnetworkaccess')]",
+        "allowBlobPublicAccess": "[parameters('sa_allowblobpublicaccess')]",
+        "allowSharedKeyAccess": "[parameters('sa_allowsharedkeyaccess')]"
+      }
+    }
+  ],
+  "outputs": {
+  }
+}
