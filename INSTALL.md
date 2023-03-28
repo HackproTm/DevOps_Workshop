@@ -1,5 +1,3 @@
-[[_TOC_]]
-
 # 1. Install Prerequisites
 
 ### 1.1 Install Chocolatey
@@ -19,6 +17,7 @@ Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://com
 [PowerShell](https://github.com/PowerShell/PowerShell) is a cross-platform (Windows, Linux, and macOS) automation and configuration tool/framework that works well with your existing tools and is optimized for dealing with structured data (e.g. JSON, CSV, XML, etc.), REST APIs, and object models. It includes a command-line shell, an associated scripting language and a framework for processing cmdlets.
 
 **Windows**
+
 To install Powershell Core open a Powershell terminal as an Administrator user, then copy & paste the next command:
 
 ```powershell
@@ -32,6 +31,7 @@ At this point your computer should already have the latest version of powershell
 [Git](https://git-scm.com/) is a free and open source distributed version control system designed to handle everything from small to very large projects with speed and efficiency.
 
 **Windows**
+
 To install Git open a Powershell Core terminal as an Administrator user, then copy & paste the next command:
 
 ```powershell
@@ -57,6 +57,7 @@ git config --global core.longpaths true
 [Visual Studio Code](https://code.visualstudio.com/) is a lightweight but powerful source code editor which runs on your desktop and is available for Windows, macOS and Linux. It comes with built-in support for JavaScript, TypeScript and Node.js and has a rich ecosystem of extensions for other languages and runtimes (such as C++, C#, Java, Python, PHP, Go, .NET).
 
 **Windows**
+
 To install Visual Studio Code open a Powershell Core terminal as an Administrator user, then copy & paste the next command:
 
 ```powershell
@@ -72,6 +73,7 @@ For this Workshop we are going to work with the following extensions, which will
 [Azure Account](https://marketplace.visualstudio.com/items?itemName=ms-vscode.azure-account)
 [Azure Pipelines](https://marketplace.visualstudio.com/items?itemName=ms-azure-devops.azure-pipelines)
 [Azure Resource Manager (ARM) Tools](https://marketplace.visualstudio.com/items?itemName=msazurermtools.azurerm-vscode-tools)
+[Bicep](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-bicep)
 [PowerShell](https://marketplace.visualstudio.com/items?itemName=ms-vscode.PowerShell)
 [YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)
 
@@ -83,11 +85,27 @@ code --install-extension ms-azure-devops.azure-pipelines
 code --install-extension redhat.vscode-yaml
 code --install-extension msazurermtools.azurerm-vscode-tools
 code --install-extension ms-vscode.azure-account
+code --install-extension ms-azuretools.vscode-bicep
 ```
+
 ### 1.7 Install Azure Az Powershell module
 
 [Azure PowerShell](https://learn.microsoft.com/en-us/powershell/azure/) is a collection of modules for managing Azure resources from PowerShell.
 
+To install Azure Az Powershell module open a Powershell Core terminal, then copy & paste the next command:
+
 ```powershell
 Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force
+```
+
+### 1.8 Install Bicep
+
+[Bicep](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/) is a language for declaratively deploying Azure resources. You can use Bicep instead of JSON for developing your Azure Resource Manager templates (ARM templates).
+
+**Windows**
+
+To install Bicep open a Powershell Core terminal as an Administrator user, then copy & paste the next command:
+
+```powershell
+choco install bicep
 ```
